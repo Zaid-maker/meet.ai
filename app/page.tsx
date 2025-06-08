@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { authClient } from "@/lib/auth-client";
 
 export default function Home() {
+  const { data: session } = authClient.useSession();
+
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -27,6 +29,15 @@ export default function Home() {
       }
     );
   };
+
+  if (session) {
+    return (
+      <div className="p-4 flex flex-col gap-y-4">
+        <div>Logged in as {session.user.name}</div>
+        <Button onClick={() => authClient.signOut()}>Sign out</Button>
+      </div>
+    );
+  }
 
   return (
     <div className="p-4 flex flex-col gap-y-4">

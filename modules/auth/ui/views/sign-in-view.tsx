@@ -60,6 +60,11 @@ export const SignInView = () => {
                       </FormItem>
                     )}
                   />
+                  <FormField
+                    control={form.control}
+                    name="password"
+                    render={({ field }) => <FormItem></FormItem>}
+                  />
                 </div>
               </div>
             </form>

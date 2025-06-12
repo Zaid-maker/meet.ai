@@ -30,6 +30,7 @@ const formSchema = z.object({
 export const SignInView = () => {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
+  const [pending, setPending] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -41,6 +42,7 @@ export const SignInView = () => {
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     setError(null);
+    setPending(true);
 
     authClient.signIn.email(
       {
@@ -49,6 +51,7 @@ export const SignInView = () => {
       },
       {
         onSuccess: () => {
+          setPending(false);
           router.push("/");
         },
         onError: ({ error }) => {
@@ -110,11 +113,11 @@ export const SignInView = () => {
                 {!!error && (
                   <Alert className="bg-destructive/10 border-none">
                     <OctagonAlertIcon className="h-4 w-4 !text-destructive" />
-                    <AlertTitle>Error</AlertTitle>
+                    <AlertTitle>{error}</AlertTitle>
                   </Alert>
                 )}
-                <Button type="submit" className="w-full">
-                  Submit
+                <Button disabled={pending} type="submit" className="w-full">
+                  Sign In
                 </Button>
                 <div className="after-border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
                   <span className="bg-card text-muted-foreground relative z-10 px-2">

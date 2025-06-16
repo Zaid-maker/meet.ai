@@ -22,10 +22,19 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
-const formSchema = z.object({
-  email: z.string().email(),
-  password: z.string().min(1, { message: "Password is Required" }),
-});
+const formSchema = z
+  .object({
+    name: z.string().min(1, { message: "Name is Required" }),
+    email: z.string().email(),
+    password: z.string().min(1, { message: "Password is Required" }),
+    confirmPassword: z.string().min(1, {
+      message: "Confirm Password is Required",
+    }),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords doesn't match",
+    path: ["confirmPassword"],
+  });
 
 export const SignUpView = () => {
   const router = useRouter();
@@ -35,8 +44,10 @@ export const SignUpView = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      name: "",
       email: "",
       password: "",
+      confirmPassword: "",
     },
   });
 
@@ -46,6 +57,7 @@ export const SignUpView = () => {
 
     authClient.signUp.email(
       {
+        name: data.name,
         email: data.email,
         password: data.password,
       },
@@ -69,10 +81,29 @@ export const SignUpView = () => {
             <form onSubmit={form.handleSubmit(onSubmit)} className="p-6 md:p-8">
               <div className="flex flex-col gap-6">
                 <div className="flex flex-col items-center text-center">
-                  <h1 className="text-2xl font-bold">Welcome back</h1>
+                  <h1 className="text-2xl font-bold">Let&apos;s get started</h1>
                   <p className="text-muted-foreground text-balance">
-                    Login to your account
+                    Create your account
                   </p>
+                </div>
+                <div className="grid gap-3">
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Name</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="text"
+                            placeholder="John Doe"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 </div>
                 <div className="grid gap-3">
                   <FormField
@@ -92,12 +123,33 @@ export const SignUpView = () => {
                       </FormItem>
                     )}
                   />
+                </div>
+                <div className="grid gap-3">
                   <FormField
                     control={form.control}
                     name="password"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Password</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="password"
+                            placeholder="********"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+                <div className="grid gap-3">
+                  <FormField
+                    control={form.control}
+                    name="confirmPassword"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Confirm Password</FormLabel>
                         <FormControl>
                           <Input
                             type="password"
@@ -143,12 +195,12 @@ export const SignUpView = () => {
                   </Button>
                 </div>
                 <div className="text-center text-sm">
-                  Don&apos;t have an account?{" "}
+                  Already have an account?{" "}
                   <Link
-                    href="/sign-up"
+                    href="/sign-in"
                     className="underline underline-offset-4"
                   >
-                    Sign up
+                    Sign In
                   </Link>
                 </div>
               </div>

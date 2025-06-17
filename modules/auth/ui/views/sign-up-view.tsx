@@ -51,6 +51,16 @@ export const SignUpView = () => {
     },
   });
 
+  /**
+   * Handles form submission for signing up a user.
+   *
+   * @param data - The form data containing user's name, email and password.
+   *
+   * Resets any previous error state and sets the pending state to true while
+   * attempting to sign up the user using the provided email and password.
+   * On successful sign-up, it redirects the user to the home page.
+   * If an error occurs during sign-up, it sets the error message state.
+   */
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     setError(null);
     setPending(true);
@@ -73,6 +83,11 @@ export const SignUpView = () => {
     );
   };
 
+  /**
+   * Handles social sign in (e.g. GitHub, Google)
+   *
+   * @param provider The provider to sign in with
+   */
   const onSocial = (provider: "github" | "google") => {
     setError(null);
     setPending(true);

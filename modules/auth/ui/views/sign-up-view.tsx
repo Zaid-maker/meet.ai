@@ -20,6 +20,7 @@ import { OctagonAlertIcon } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 
 const formSchema = z
   .object({
@@ -36,6 +37,7 @@ const formSchema = z
   });
 
 export const SignUpView = () => {
+  const router = useRouter();
   const [error, setError] = useState<string | null>(null);
   const [pending, setPending] = useState(false);
 
@@ -72,6 +74,7 @@ export const SignUpView = () => {
       },
       {
         onSuccess: () => {
+          router.push("/");
           setPending(false);
         },
         onError: ({ error }) => {

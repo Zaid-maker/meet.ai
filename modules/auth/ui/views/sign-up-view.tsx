@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
+import { FaGithub, FaGoogle } from "react-icons/fa";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -220,6 +221,7 @@ export const SignUpView = () => {
                     type="button"
                     className="w-full"
                   >
+                    <FaGoogle />
                     Google
                   </Button>
                   <Button
@@ -229,6 +231,7 @@ export const SignUpView = () => {
                     type="button"
                     className="w-full"
                   >
+                    <FaGithub />
                     GitHub
                   </Button>
                 </div>

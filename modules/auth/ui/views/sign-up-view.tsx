@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
+import { FaGithub, FaGoogle } from "react-icons/fa";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -18,9 +19,9 @@ import { Input } from "@/components/ui/input";
 import { authClient } from "@/lib/auth-client";
 import { OctagonAlertIcon } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 
 const formSchema = z
   .object({
@@ -51,6 +52,16 @@ export const SignUpView = () => {
     },
   });
 
+  /**
+   * Handles form submission for signing up a user.
+   *
+   * @param data - The form data containing user's name, email and password.
+   *
+   * Resets any previous error state and sets the pending state to true while
+   * attempting to sign up the user using the provided email and password.
+   * On successful sign-up, it redirects the user to the home page.
+   * If an error occurs during sign-up, it sets the error message state.
+   */
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     setError(null);
     setPending(true);
@@ -60,11 +71,37 @@ export const SignUpView = () => {
         name: data.name,
         email: data.email,
         password: data.password,
+        callbackURL: "/",
+      },
+      {
+        onSuccess: () => {
+          router.push("/");
+          setPending(false);
+        },
+        onError: ({ error }) => {
+          setError(error.message);
+        },
+      }
+    );
+  };
+
+  /**
+   * Handles social sign in (e.g. GitHub, Google)
+   *
+   * @param provider The provider to sign in with
+   */
+  const onSocial = (provider: "github" | "google") => {
+    setError(null);
+    setPending(true);
+
+    authClient.signIn.social(
+      {
+        provider: provider,
+        callbackURL: "/",
       },
       {
         onSuccess: () => {
           setPending(false);
-          router.push("/");
         },
         onError: ({ error }) => {
           setError(error.message);
@@ -179,18 +216,22 @@ export const SignUpView = () => {
                 <div className="grid grid-cols-2 gap-4">
                   <Button
                     disabled={pending}
+                    onClick={() => onSocial("google")}
                     variant={"outline"}
                     type="button"
                     className="w-full"
                   >
+                    <FaGoogle />
                     Google
                   </Button>
                   <Button
                     disabled={pending}
+                    onClick={() => onSocial("github")}
                     variant={"outline"}
                     type="button"
                     className="w-full"
                   >
+                    <FaGithub />
                     GitHub
                   </Button>
                 </div>

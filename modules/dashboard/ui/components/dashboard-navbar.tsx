@@ -3,12 +3,26 @@
 import { Button } from "@/components/ui/button";
 import { useSidebar } from "@/components/ui/sidebar";
 import { PanelLeftCloseIcon, PanelLeftIcon, SearchIcon } from "lucide-react";
+import { useEffect, useState } from "react";
 import { DashboardCommand } from "./dashboard-command";
-import { useState } from "react";
 
 export const DashboardNavbar = () => {
   const { state, toggleSidebar, isMobile } = useSidebar();
   const [commandOpen, setCommandOpen] = useState(false);
+
+  useEffect(() => {
+    const down = (e: KeyboardEvent) => {
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setCommandOpen((open) => !open);
+      }
+    };
+
+    document.addEventListener("keydown", down);
+    return () => {
+      document.removeEventListener("keydown", down);
+    };
+  }, []);
 
   return (
     <>

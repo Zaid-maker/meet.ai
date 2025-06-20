@@ -12,6 +12,11 @@ export const metadata: Metadata = {
   icons: "/logo.svg"
 };
 
+/**
+ * Defines the root layout for the application, applying global font and styling to all pages.
+ *
+ * @param children - The content to be rendered within the layout
+ */
 export default function RootLayout({
   children,
 }: Readonly<{

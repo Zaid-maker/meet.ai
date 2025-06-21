@@ -1,4 +1,10 @@
-import { CommandDialog, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import {
+  CommandDialog,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command";
+import { SearchIcon, UserIcon } from "lucide-react";
 import { Dispatch, SetStateAction } from "react";
 
 interface DashboardCommandProps {

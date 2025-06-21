@@ -14,9 +14,9 @@ export const metadata: Metadata = {
 };
 
 /**
- * Root layout component that sets up global font and styling for all pages.
+ * Root layout component that provides global font, styling, and TRPC context for all pages.
  *
- * @param children - React nodes to render within the layout
+ * @param children - The page content to render within the layout
  */
 export default function RootLayout({
   children,

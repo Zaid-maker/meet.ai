@@ -1,5 +1,6 @@
 "use client";
 
+import { LoadingState } from "@/components/loading-state";
 import { useTRPC } from "@/trpc/client";
 import { useQuery } from "@tanstack/react-query";
 import React from "react";
@@ -12,7 +13,12 @@ export const AgentsView = () => {
   console.log(data);
 
   if (isLoading) {
-    return <div className="animate-pulse">Loading...</div>;
+    return (
+      <LoadingState
+        title="Loading Agents"
+        description="Please wait while we load the agents."
+      />
+    );
   }
 
   if (isError) {

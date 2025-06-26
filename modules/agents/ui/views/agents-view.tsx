@@ -1,8 +1,9 @@
 "use client";
 
+import { ErrorState } from "@/components/error-state";
+import { LoadingState } from "@/components/loading-state";
 import { useTRPC } from "@/trpc/client";
 import { useQuery } from "@tanstack/react-query";
-import React from "react";
 
 export const AgentsView = () => {
   const trpc = useTRPC();
@@ -12,11 +13,21 @@ export const AgentsView = () => {
   console.log(data);
 
   if (isLoading) {
-    return <div className="animate-pulse">Loading...</div>;
+    return (
+      <LoadingState
+        title="Loading Agents"
+        description="Please wait while we load the agents."
+      />
+    );
   }
 
   if (isError) {
-    return <div className="text-red">Error loading data</div>;
+    return (
+      <ErrorState
+        title="Error Loading Agents"
+        description="An error occurred while fetching the agents."
+      />
+    );
   }
 
   return (
